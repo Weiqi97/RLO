@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import numpy as np
 import plotly.graph_objects as go
 from plotly.offline import plot
@@ -9,6 +9,16 @@ app = Flask(__name__)
 @app.route("/")
 def main_page():
     return render_template("index.html")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    return redirect(url_for("dashboard"))
+
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 
 @app.route("/graph")
