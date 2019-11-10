@@ -22,22 +22,14 @@ def get_graph():
 
     # Create traces
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=random_x, y=random_y0,
-                             mode='lines',
-                             name='lines'))
-    fig.add_trace(go.Scatter(x=random_x, y=random_y1,
-                             mode='lines+markers',
-                             name='lines+markers'))
-    fig.add_trace(go.Scatter(x=random_x, y=random_y2,
-                             mode='markers', name='markers'))
-
-    return plot(
-        fig,
-        show_link=False,
-        output_type="div",
-        include_plotlyjs=False
+    fig.add_trace(go.Scatter(x=random_x, y=random_y0, mode="lines", name="lines"))
+    fig.add_trace(
+        go.Scatter(x=random_x, y=random_y1, mode="lines+markers", name="lines+markers")
     )
+    fig.add_trace(go.Scatter(x=random_x, y=random_y2, mode="markers", name="markers"))
+
+    return plot(fig, show_link=False, output_type="div", include_plotlyjs=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
