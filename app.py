@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import numpy as np
 import plotly.graph_objects as go
 from plotly.offline import plot
@@ -29,6 +29,23 @@ def get_graph():
     fig.add_trace(go.Scatter(x=random_x, y=random_y2, mode="markers", name="markers"))
 
     return plot(fig, show_link=False, output_type="div", include_plotlyjs=False)
+
+
+@app.route("/upload", methods=["POST"])
+def upload():
+    file_ = request.files["file"]
+    # TODO: Handle error
+    data = np.loadtxt(file_)
+
+    reference = np.random.randn(10000)
+    fig = go.Figure(
+        data=[
+            go.Histogram(x=reference, histnorm="probability"),
+            go.Histogram(x=data, histnorm="probability"),
+        ]
+    )
+
+    return plot(fig, show_link=False, output_type="div")
 
 
 if __name__ == "__main__":

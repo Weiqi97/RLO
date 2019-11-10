@@ -8,7 +8,12 @@
     <title>RLO Project</title>
 </head>
 <body>
-    <button>Upload</button>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <label for="upload-file">Upload simulation result:</label>
+        <input type="file" id="upload-file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+
     <button id="get-comparison">Get Comparison</button>
     <div id="container"></div>
 </body>
