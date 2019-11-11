@@ -1,6 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+import uuid
+
+from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, UserMixin, LoginManager, login_required
+from flask_login import (
+    login_user,
+    UserMixin,
+    LoginManager,
+    login_required,
+    current_user,
+)
 from werkzeug.security import check_password_hash
 import numpy as np
 import plotly.graph_objects as go
@@ -35,6 +43,15 @@ class Homework(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String)
     reference = db.Column(db.String)
+
+
+class Submission(db.Model):
+    __tablename__ = "submissions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    homework_id = db.Column(db.Integer, db.ForeignKey("homeworks.id"), nullable=False)
+    path = db.Column(db.String)
 
 
 @app.route("/")
@@ -84,10 +101,32 @@ def get_graph():
 
 
 @app.route("/upload", methods=["POST"])
+@login_required
 def upload():
+    hw_id = request.form["homework"]
+    hw = Homework.query.get(hw_id)
+    if hw.status != "OPEN":
+        abort(500)
+
     file_ = request.files["file"]
     # TODO: Handle error
     data = np.loadtxt(file_)
+
+    path = f"data/{uuid.uuid4().hex}"
+    np.save(path, data)
+
+    submission = (
+        Submission.query.filter_by(user_id=current_user.id, homework_id=hw_id)
+        .order_by(Submission.id.desc())
+        .first()
+    )
+    if submission:
+        # TODO: Delete old submission
+        pass
+
+    submission = Submission(user_id=current_user.id, homework_id=hw_id, path=path)
+    db.session.add(submission)
+    db.session.commit()
 
     reference = np.random.randn(10000)
     fig = go.Figure(
