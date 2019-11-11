@@ -13,9 +13,11 @@
   <button id="get-comparison">Get Comparison</button>
   <div id="container"></div>
 
+  {% for hw in hws %}
   <div>
-    <h2>Homework 3</h2>
+    <h2>Homework {{ hw.id }}, {{ hw.status }}</h2>
     <div>Attempts: 10</div>
+    {% if hw.status == 'OPEN' %}
     <form method="post" action="/upload" enctype="multipart/form-data">
       <label for="upload-file">Upload simulation result:</label>
       <input type="file" id="upload-file" name="file">
@@ -23,21 +25,10 @@
         <input type="submit" value="Upload">
       </div>
     </form>
+    {% endif %}
     <a href="">Get last report</a>
   </div>
-
-  <div>
-    <h2>Homework 2</h2>
-    <div>Attempts: 10</div>
-    <form method="post" action="/upload" enctype="multipart/form-data">
-      <label for="upload-file">Upload simulation result:</label>
-      <input type="file" id="upload-file" name="file">
-      <div>
-        <input type="submit" value="Upload">
-      </div>
-    </form>
-    <a href="">Get last report</a>
-  </div>
+  {% endfor %}
 </body>
 
 </html>

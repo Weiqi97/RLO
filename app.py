@@ -29,6 +29,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String)
 
 
+class Homework(db.Model):
+    __tablename__ = "homeworks"
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String)
+    reference = db.Column(db.String)
+
+
 @app.route("/")
 def main_page():
     return render_template("index.html")
@@ -51,7 +59,8 @@ def login():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    hws = Homework.query.order_by(Homework.id.desc()).all()
+    return render_template("dashboard.html", hws=hws)
 
 
 @app.route("/graph")
