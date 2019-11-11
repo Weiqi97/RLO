@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_user, UserMixin, LoginManager, login_required
+from werkzeug.security import check_password_hash
 import numpy as np
 import plotly.graph_objects as go
 from plotly.offline import plot
@@ -8,8 +10,18 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/data.db"
 db = SQLAlchemy(app)
 
+# TODO: This is unsafe
+app.config["SECRET_KEY"] = "0"
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-class User(db.Model):
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -24,10 +36,20 @@ def main_page():
 
 @app.route("/login", methods=["POST"])
 def login():
-    return redirect(url_for("dashboard"))
+    username = request.form["username"]
+    password = request.form["password"]
+
+    user = User.query.filter_by(email=username).first()
+    # Check if `check_password_hash` and this code are secure
+    if user and check_password_hash(user.password, password):
+        login_user(user)
+        return redirect(url_for("dashboard"))
+
+    # Handle login failure
 
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("dashboard.html")
 
