@@ -51,6 +51,8 @@ class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     homework_id = db.Column(db.Integer, db.ForeignKey("homeworks.id"), nullable=False)
+    homework = db.relationship("Homework", lazy=True)
+
     path = db.Column(db.String)
 
 
@@ -128,7 +130,21 @@ def upload():
     db.session.add(submission)
     db.session.commit()
 
-    reference = np.random.randn(10000)
+    return redirect(url_for("show_result", id_=submission.id))
+
+
+@app.route("/result/<int:id_>")
+@login_required
+def show_result(id_):
+    submission = Submission.query.filter_by(user_id=current_user.id, id=id_).first()
+    if not submission:
+        abort(404)
+
+    data = np.load(submission.path + ".npy")
+
+    hw = submission.homework.reference
+    reference = np.loadtxt(hw)
+
     fig = go.Figure(
         data=[
             go.Histogram(x=reference, histnorm="probability"),
