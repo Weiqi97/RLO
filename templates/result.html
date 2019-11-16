@@ -11,7 +11,20 @@
     <div>
       {{ fig_div|safe }}
     </div>
-    <div></div>
+    <div>
+      <p>We run Kolmogorov-Smirnov two sample test on your submission and the reference result</p>
+      <p>KS Distance: {{ ks_result.dist }}</p>
+      <p>p-value: {{ ks_result.p_val }}</p>
+      <p>
+        At significance level {{ ks_result.level }}, we 
+        {% if ks_result.rejected %}
+          reject
+        {% else %}
+          cannot reject
+        {% endif %}        
+        the hypothesis that the two samples are drawn from the same distribution
+      </p>
+    </div>
   </div>
 </body>
 

@@ -1,4 +1,5 @@
 import uuid
+from dataclasses import dataclass
 
 from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +12,7 @@ from flask_login import (
 )
 from werkzeug.security import check_password_hash
 import numpy as np
+from scipy.stats import ks_2samp
 import plotly.graph_objects as go
 from plotly.offline import plot
 
@@ -54,6 +56,14 @@ class Submission(db.Model):
     homework = db.relationship("Homework", lazy=True)
 
     path = db.Column(db.String)
+
+
+@dataclass
+class KSResult:
+    level: float
+    dist: float
+    p_val: float
+    rejected: bool
 
 
 @app.route("/")
@@ -155,7 +165,11 @@ def show_result(id_):
     fig.update_traces(opacity=0.3)
     fig_div = plot(fig, show_link=False, output_type="div")
 
-    return render_template("result.html", fig_div=fig_div)
+    level = 0.05
+    dist, p_val = ks_2samp(data, reference)
+    ks_result = KSResult(level=level, dist=dist, p_val=p_val, rejected=p_val < level)
+
+    return render_template("result.html", fig_div=fig_div, ks_result=ks_result)
 
 
 if __name__ == "__main__":
