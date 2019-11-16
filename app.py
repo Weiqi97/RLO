@@ -145,14 +145,17 @@ def show_result(id_):
     hw = submission.homework.reference
     reference = np.loadtxt(hw)
 
-    fig = go.Figure(
-        data=[
-            go.Histogram(x=reference, histnorm="probability"),
-            go.Histogram(x=data, histnorm="probability"),
-        ]
+    # FIXME: This seems to release the data to the HTML
+    trace_reference = go.Histogram(
+        x=reference, histnorm="probability", name="Reference"
     )
+    trace_result = go.Histogram(x=data, histnorm="probability", name="Your Result")
+    fig = go.Figure(data=[trace_reference, trace_result])
+    fig.update_layout(barmode="overlay")
+    fig.update_traces(opacity=0.3)
+    fig_div = plot(fig, show_link=False, output_type="div")
 
-    return plot(fig, show_link=False, output_type="div")
+    return render_template("result.html", fig_div=fig_div)
 
 
 if __name__ == "__main__":
