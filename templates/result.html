@@ -4,28 +4,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Introduction to Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-  <div>
-    <div>
-      {{ fig_div|safe }}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-8">
+        <h2>Histogram Comparison</h2>
+        {{ fig_div|safe }}
+      </div>
     </div>
-    <div>
-      <p>We run Kolmogorov-Smirnov two sample test on your submission and the reference result</p>
-      <p>KS Distance: {{ ks_result.dist }}</p>
-      <p>p-value: {{ ks_result.p_val }}</p>
-      <p>
-        At significance level {{ ks_result.level }}, we 
-        {% if ks_result.rejected %}
+    <div class="row justify-content-center">
+      <div class="col-8">
+        <h2>Statistical Hypothesis Testing</h2>
+        <p>We run Kolmogorov-Smirnov two sample test on your submission and the reference result</p>
+        <p>KS Distance: {{ ks_result.dist }}</p>
+        <p>p-value: {{ ks_result.p_val }}</p>
+        <p>
+          At significance level {{ ks_result.level }}, we
+          {% if ks_result.rejected %}
           reject
-        {% else %}
+          {% else %}
           cannot reject
-        {% endif %}        
-        the hypothesis that the two samples are drawn from the same distribution
-      </p>
+          {% endif %}
+          the hypothesis that the two samples are drawn from the same distribution
+        </p>
+      </div>
     </div>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
