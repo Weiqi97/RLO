@@ -1,35 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% set active_page = 'dashboard' %}
 
-<head>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="../static/js/index.js"></script>
-  <meta charset="UTF-8">
-  <title>RLO Project</title>
-</head>
+{% block body %}
+<button id="get-comparison">Get Comparison</button>
+<div id="container"></div>
 
-<body>
-  <button id="get-comparison">Get Comparison</button>
-  <div id="container"></div>
-
-  {% for hw in hws %}
-  <div>
-    <h2>Homework {{ hw.id }}, {{ hw.status }}</h2>
-    <div>Attempts: 10</div>
-    {% if hw.status == 'OPEN' %}
-    <form method="post" action="/upload" enctype="multipart/form-data">
-      <label for="upload-file">Upload simulation result:</label>
-      <input type="file" id="upload-file" name="file">
-      <div>
-        <input type="submit" value="Upload">
-      </div>
-      <input type="hidden" name="homework" value="{{ hw.id }}">
-    </form>
-    {% endif %}
-    <a href="">Get last report</a>
-  </div>
-  {% endfor %}
-</body>
-
-</html>
+{% for hw in hws %}
+<div>
+  <h2>Homework {{ hw.id }}, {{ hw.status }}</h2>
+  <div>Attempts: 10</div>
+  {% if hw.status == 'OPEN' %}
+  <form method="post" action="/upload" enctype="multipart/form-data">
+    <label for="upload-file">Upload simulation result:</label>
+    <input type="file" id="upload-file" name="file">
+    <div>
+      <input type="submit" value="Upload">
+    </div>
+    <input type="hidden" name="homework" value="{{ hw.id }}">
+  </form>
+  {% endif %}
+  <a href="">Get last report</a>
+</div>
+{% endfor %}
+{% endblock %}

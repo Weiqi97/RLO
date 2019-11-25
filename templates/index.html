@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <title>Introduction to Simulation</title>
-</head>
+{% block body %}
+<h1>Introduction to Simulation</h1>
+<div>
+  <h2>Status</h2>
+  <ul>
+    <li>Homework 3 submission channel is open</li>
+    <li>Homework 2 submission channel is closed</li>
+    <li>Homework 1 submission channel is closed</li>
+  </ul>
+</div>
 
-<body>
-  <h1>Introduction to Simulation</h1>
-  <div>
-    <h2>Status</h2>
-    <ul>
-      <li>Homework 3 submission channel is open</li>
-      <li>Homework 2 submission channel is closed</li>
-      <li>Homework 1 submission channel is closed</li>
-    </ul>
-  </div>
-
-  <div>
-    <form method="POST" action="/login">
-      <h2>Login</h2>
-      <label>Username: </label>
-      <input type="text" name="username" placeholder="Enter username">
-      <label>Password: </label>
-      <input type="password" name="password" placeholder="Enter password">
-      <input type="submit" value="Submit">
-    </form>
-  </div>
-</body>
-
-</html>
+<div>
+  <form method="POST" action="/login">
+    <h2>Login</h2>
+    <label>Username: </label>
+    <input type="text" name="username" placeholder="Enter username">
+    <label>Password: </label>
+    <input type="password" name="password" placeholder="Enter password">
+    <input type="submit" value="Submit">
+  </form>
+</div>
+{% endblock %}
