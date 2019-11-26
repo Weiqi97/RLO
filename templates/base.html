@@ -26,9 +26,15 @@
         </li>
       </ul>
 
+      {% if current_user.is_authenticated %}
+      <span class="navbar-text">
+        {{ current_user.email }}
+      </span>
+      {% else %}
       <a href="{{ url_for('login') }}">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log In</button>
       </a>
+      {% endif %}
     </div>
   </nav>
 
