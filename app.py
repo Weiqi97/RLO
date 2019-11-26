@@ -68,7 +68,8 @@ class KSResult:
 
 @app.route("/")
 def main_page():
-    return render_template("index.html")
+    hws = Homework.query.order_by(Homework.id.desc()).all()
+    return render_template("index.html", hws=hws)
 
 
 @app.route("/login", methods=["POST"])

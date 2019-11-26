@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1>Introduction to Simulation</h1>
-<div>
-  <h2>Status</h2>
-  <ul>
-    <li>Homework 3 submission channel is open</li>
-    <li>Homework 2 submission channel is closed</li>
-    <li>Homework 1 submission channel is closed</li>
-  </ul>
-</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h2 class="mt-5">News</h2>
+      {% for hw in hws %}
+      <div class="card mx-auto mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Homework {{ hw.id }} is now ready</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Submission:
 
-<div>
-  <form method="POST" action="/login">
-    <h2>Login</h2>
-    <label>Username: </label>
-    <input type="text" name="username" placeholder="Enter username">
-    <label>Password: </label>
-    <input type="password" name="password" placeholder="Enter password">
-    <input type="submit" value="Submit">
-  </form>
+            <span class={% if hw.status == 'OPEN' %} "submission-open" {% else %} "submission-closed"
+              {% endif %}>{{ hw.status }}</span>
+          </h6>
+          <p class="card-text">Deadline: 2020-02-01 11:55 PM</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 {% endblock %}
