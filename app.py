@@ -72,18 +72,21 @@ def main_page():
     return render_template("index.html", hws=hws)
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
+    if request.method == "GET":
+        return render_template("login.html")
+    else:
+        username = request.form["username"]
+        password = request.form["password"]
 
-    user = User.query.filter_by(email=username).first()
-    # Check if `check_password_hash` and this code are secure
-    if user and check_password_hash(user.password, password):
-        login_user(user)
-        return redirect(url_for("dashboard"))
+        user = User.query.filter_by(email=username).first()
+        # Check if `check_password_hash` and this code are secure
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for("dashboard"))
 
-    # Handle login failure
+        # Handle login failure
 
 
 @app.route("/dashboard")
