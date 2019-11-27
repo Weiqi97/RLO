@@ -2,24 +2,67 @@
 {% set active_page = 'dashboard' %}
 
 {% block body %}
-<button id="get-comparison">Get Comparison</button>
-<div id="container"></div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <h2 class="mt-5">Homeworks</h2>
+      {% for hw in hws %}
+      <div class="card mx-auto mt-4">
+        <div class="card-header">
+          Homework {{ hw.id }}
+        </div>
+        <div class="card-body">
+          <p class="card-text">Submission:
+            <span class={% if hw.status == 'OPEN' %} "submission-open" {% else %} "submission-closed"
+              {% endif %}>{{ hw.status }}</span>
+          </p>
+          <p class="card-text">Deadline: 2020-02-01 11:55 PM</p>
+          <p class="card-text">Attempts: 10</p>
+          <button class="btn btn-primary">Get last report</button>
+          {% if hw.status == 'OPEN' %}
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload-modal">
+            Upload result
+          </button>
+          {% endif %}
 
-{% for hw in hws %}
-<div>
-  <h2>Homework {{ hw.id }}, {{ hw.status }}</h2>
-  <div>Attempts: 10</div>
-  {% if hw.status == 'OPEN' %}
-  <form method="post" action="/upload" enctype="multipart/form-data">
-    <label for="upload-file">Upload simulation result:</label>
-    <input type="file" id="upload-file" name="file">
-    <div>
-      <input type="submit" value="Upload">
+          <div class="modal" id="upload-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Upload Result</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="post" action="/upload" enctype="multipart/form-data">
+                  <div class="modal-body">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" name="file" id="customFile">
+                      <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    <input type="hidden" name="homework" value="{{ hw.id }}">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    <input type="hidden" name="homework" value="{{ hw.id }}">
-  </form>
-  {% endif %}
-  <a href="">Get last report</a>
+  </div>
 </div>
-{% endfor %}
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<script>
+  $(document).ready(function () {
+    bsCustomFileInput.init()
+  })
+</script>
 {% endblock %}
