@@ -5,3 +5,11 @@ span.submission-open {
 span.submission-closed {
   color: #FF4136;
 }
+
+.not-rejected {
+  color: #2ECC40;
+}
+
+.rejected {
+  color: #FF4136;
+}
