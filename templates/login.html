@@ -7,6 +7,10 @@
       <div class="card mt-5">
         <div class="card-body">
           <h5 class="card-title text-center">Log In</h5>
+            {% if login_status %}
+                <label for="login-status">Username or Password is Wrong.</label>
+            {% else %}
+            {% endif %}
           <form action="/login" method="POST">
             <div class="form-group">
               <label for="username">Username</label>

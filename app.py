@@ -88,6 +88,8 @@ def login():
             return redirect(url_for("dashboard"))
 
         # Handle login failure
+        else:
+            return render_template("login.html", login_status="fail")
 
 
 @app.route("/dashboard")
