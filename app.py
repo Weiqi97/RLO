@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     login_user,
+    logout_user,
     UserMixin,
     LoginManager,
     login_required,
@@ -58,6 +59,9 @@ class Submission(db.Model):
 
     path = db.Column(db.String)
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return render_template("login.html", login_status="Login Required")
 
 @dataclass
 class KSResult:
@@ -89,7 +93,14 @@ def login():
 
         # Handle login failure
         else:
-            return render_template("login.html", login_status="fail")
+            return render_template("login.html", login_status="Username or Password is Wrong.")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+        # TODO: make sure if there is other needed logout action (e.g. any cache need to be deleted?)
+        logout_user()
+        return render_template("login.html")
+
 
 
 @app.route("/dashboard")
