@@ -8,7 +8,7 @@
         <div class="card-body">
           <h5 class="card-title text-center">Log In</h5>
             {% if login_status %}
-                <label for="login-status">Username or Password is Wrong.</label>
+                <label for="login-status">{{ login_status }}</label>
             {% else %}
             {% endif %}
           <form action="/login" method="POST">
