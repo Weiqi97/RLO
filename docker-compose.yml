@@ -1,8 +1,11 @@
 version: "3"
+
 services:
   web:
     # build: .
     image: 088110255905.dkr.ecr.us-east-1.amazonaws.com/poisson
+    volumes:
+      - "./data:/app/data"
 
   nginx:
     image: nginx
