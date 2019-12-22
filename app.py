@@ -17,11 +17,12 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/data.db"
+app.config.from_pyfile("settings")
+if app.env == "production":
+    app.config.from_envvar("PRODUCTION_SETTINGS")
+
 db = SQLAlchemy(app)
 
-# TODO: This is unsafe
-app.config["SECRET_KEY"] = "0"
 login_manager = LoginManager()
 login_manager.init_app(app)
 
