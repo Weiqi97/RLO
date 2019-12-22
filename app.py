@@ -17,6 +17,7 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 
 app = Flask(__name__)
+app.
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/data.db"
 db = SQLAlchemy(app)
 
