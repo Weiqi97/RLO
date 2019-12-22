@@ -13,3 +13,9 @@ span.submission-closed {
 .rejected {
   color: #FF4136;
 }
+
+footer {
+  height: 60px;
+  line-height: 60px;
+  background-color: #f5f5f5;
+}

@@ -17,12 +17,14 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 
 app = Flask(__name__)
-app.
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/data.db"
+app.logger.warning(f"Flask is running in {app.env} mode")
+
+app.config.from_pyfile("settings")
+if app.env == "production":
+    app.config.from_envvar("POISSON_SETTINGS")
+
 db = SQLAlchemy(app)
 
-# TODO: This is unsafe
-app.config["SECRET_KEY"] = "0"
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -134,8 +136,8 @@ def upload():
 
     submission = (
         Submission.query.filter_by(user_id=current_user.id, homework_id=hw_id)
-        .order_by(Submission.id.desc())
-        .first()
+            .order_by(Submission.id.desc())
+            .first()
     )
     if submission:
         # TODO: Delete old submission
