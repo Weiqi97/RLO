@@ -102,9 +102,8 @@ def login():
 
 @app.route("/logout", methods=["GET"])
 def logout():
-    # TODO: make sure if there is other needed logout action (e.g. any cache need to be deleted?)
     logout_user()
-    return render_template("login.html")
+    return redirect(url_for("index"))
 
 
 @app.route("/dashboard")
