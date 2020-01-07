@@ -59,9 +59,11 @@ class Submission(db.Model):
 
     path = db.Column(db.String)
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
-    return render_template("login.html", login_status="Login Required.")
+    return render_template("login.html", login_status="Login required.")
+
 
 @dataclass
 class KSResult:
@@ -93,14 +95,16 @@ def login():
 
         # Handle login failure
         else:
-            return render_template("login.html", login_status="Username or Password is Wrong.")
+            return render_template(
+                "login.html", login_status="Username or password is wrong."
+            )
+
 
 @app.route("/logout", methods=["GET"])
 def logout():
-        # TODO: make sure if there is other needed logout action (e.g. any cache need to be deleted?)
-        logout_user()
-        return render_template("login.html")
-
+    # TODO: make sure if there is other needed logout action (e.g. any cache need to be deleted?)
+    logout_user()
+    return render_template("login.html")
 
 
 @app.route("/dashboard")
@@ -145,7 +149,11 @@ def upload():
         data = np.loadtxt(file_)
     except:
         hws = Homework.query.order_by(Homework.id.desc()).all()
-        return render_template("dashboard.html", hws=hws, upload_status="Note: Your Previously Uploaded File Format is Incorrect.")
+        return render_template(
+            "dashboard.html",
+            hws=hws,
+            upload_status="Note: your previously uploaded file format is incorrect.",
+        )
 
     path = f"data/{uuid.uuid4().hex}"
     np.save(path, data)
