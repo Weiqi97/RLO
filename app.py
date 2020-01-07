@@ -143,16 +143,7 @@ def upload():
 
     file_ = request.files["file"]
     # TODO: Handle error
-    data = None
-    try:
-        data = np.loadtxt(file_)
-    except:
-        hws = Homework.query.order_by(Homework.id.desc()).all()
-        return render_template(
-            "dashboard.html",
-            hws=hws,
-            upload_status="Note: your previously uploaded file format is incorrect.",
-        )
+    data = np.loadtxt(file_)
 
     path = f"data/{uuid.uuid4().hex}"
     np.save(path, data)
