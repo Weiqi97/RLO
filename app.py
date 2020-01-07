@@ -74,7 +74,7 @@ class KSResult:
 
 
 @app.route("/")
-def main_page():
+def index():
     hws = Homework.query.order_by(Homework.id.desc()).all()
     return render_template("index.html", hws=hws)
 
