@@ -7,10 +7,11 @@
       <div class="card mt-5">
         <div class="card-body">
           <h5 class="card-title text-center">Log In</h5>
-            {% if login_status %}
-                <label for="login-status">{{ login_status }}</label>
-            {% else %}
-            {% endif %}
+          {% if login_status %}
+          <div class="alert alert-danger" role="alert">
+            {{ login_status }}
+          </div>
+          {% endif %}
           <form action="/login" method="POST">
             <div class="form-group">
               <label for="username">Username</label>
